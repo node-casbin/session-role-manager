@@ -1,0 +1,42 @@
+{
+  "name": "session-role-manager",
+  "version": "1.0.0",
+  "description": "A session based role mannger for node-casbin.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/node-casbin/session-role-manager.git"
+  },
+  "keywords": [
+    "authorization",
+    "role-manager",
+    "node-casbin",
+    "typescript",
+    "casbin"
+  ],
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/node-casbin/session-role-manager/issues"
+  },
+  "homepage": "http://casbin.org",
+  "devDependencies": {
+    "husky": "^4.2.5",
+    "jest": "^26.0.1",
+    "prettier": "^2.0.5",
+    "pretty-quick": "^2.0.1",
+    "ts-jest": "^25.5.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint && pretty-quick --staged"
+    }
+  }
+}
