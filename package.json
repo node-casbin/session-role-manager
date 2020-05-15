@@ -38,5 +38,8 @@
     "hooks": {
       "pre-commit": "pretty-quick --staged"
     }
+  },
+  "dependencies": {
+    "casbin": "^4.7.2"
   }
 }
