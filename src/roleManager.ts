@@ -2,7 +2,7 @@ import { RoleManager, logPrint } from 'casbin';
 import { SessionRole } from './sessionRole';
 import { Session } from './session';
 
-class SessionRoleManager implements RoleManager {
+export class SessionRoleManager implements RoleManager {
   private allRoles: Map<String, SessionRole>;
   private maxHierarchyLevel: number;
 
@@ -97,13 +97,13 @@ class SessionRoleManager implements RoleManager {
   public async getRoles(name: string, ...currentTime: string[]): Promise<string[]> {
     if (currentTime.length != 1) {
       // return nil, errors.New("error: currentTime should be 1 parameter")
-      return;
+      return null;
     }
     const requestTime = currentTime[0];
 
     if (!this.hasRole(name)) {
       // return nil, errors.New("error: name does not exist")
-      return;
+      return null;
     }
 
     const sessionRoles = this.createRole(name).getSessionRoles(requestTime);
@@ -115,7 +115,7 @@ class SessionRoleManager implements RoleManager {
   public async getUsers(name: string, ...currentTime: string[]): Promise<string[]> {
     if (currentTime.length != 1) {
       // return nil, errors.New("error: currentTime should be 1 parameter")
-      return;
+      return null;
     }
     const requestTime = currentTime[0];
 
