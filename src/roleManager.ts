@@ -42,13 +42,13 @@ class SessionRoleManager implements RoleManager {
       // return errors.New("error: timeRange should be 2 parameters")
       return;
     }
-    let startTime = timeRange[0];
-    let endTime = timeRange[1];
+    const startTime = timeRange[0];
+    const endTime = timeRange[1];
 
-    let role1 = this.createRole(name1);
-    let role2 = this.createRole(name2);
+    const role1 = this.createRole(name1);
+    const role2 = this.createRole(name2);
 
-    let session = new Session(role2, startTime, endTime);
+    const session = new Session(role2, startTime, endTime);
     role1.addSession(session);
     return;
   }
@@ -62,8 +62,8 @@ class SessionRoleManager implements RoleManager {
       return;
     }
 
-    let role1 = this.createRole(name1);
-    let role2 = this.createRole(name2);
+    const role1 = this.createRole(name1);
+    const role2 = this.createRole(name2);
 
     role1.deleteSessions(role2.name);
     return;
@@ -87,7 +87,7 @@ class SessionRoleManager implements RoleManager {
       return false;
     }
 
-    let role1 = this.createRole(name1);
+    const role1 = this.createRole(name1);
     // return role1.hasValidSession(name2, rm.maxHierarchyLevel, requestTime[0]), nil
     return role1.hasValidSession(name2, this.maxHierarchyLevel, requestTime[0]);
   }
@@ -99,14 +99,14 @@ class SessionRoleManager implements RoleManager {
       // return nil, errors.New("error: currentTime should be 1 parameter")
       return;
     }
-    let requestTime = currentTime[0];
+    const requestTime = currentTime[0];
 
     if (!this.hasRole(name)) {
       // return nil, errors.New("error: name does not exist")
       return;
     }
 
-    let sessionRoles = this.createRole(name).getSessionRoles(requestTime);
+    const sessionRoles = this.createRole(name).getSessionRoles(requestTime);
     return sessionRoles;
   }
 
@@ -117,10 +117,10 @@ class SessionRoleManager implements RoleManager {
       // return nil, errors.New("error: currentTime should be 1 parameter")
       return;
     }
-    let requestTime = currentTime[0];
+    const requestTime = currentTime[0];
 
-    let users: string[] = [];
-    for (let item of this.allRoles) {
+    const users: string[] = [];
+    for (const item of this.allRoles) {
       if (item[1].hasDirectRole(name, requestTime)) {
         users.push(item[1].name);
       }
@@ -131,7 +131,7 @@ class SessionRoleManager implements RoleManager {
 
   // PrintRoles prints all the roles to log.
   public printRoles(): Promise<void> {
-    for (let item of this.allRoles) {
+    for (const item of this.allRoles) {
       logPrint(item[1].toString());
     }
     return;

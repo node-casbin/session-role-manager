@@ -17,7 +17,7 @@ export class SessionRole {
   public deleteSessions(sessionName: string) {
     // Delete sessions from an array while iterating it
     let index = 0;
-    for (let srs of this.sessions) {
+    for (const srs of this.sessions) {
       if (srs.role.name != sessionName) {
         this.sessions[index] = srs;
         index++;
@@ -27,8 +27,8 @@ export class SessionRole {
   }
 
   public getSessionRoles(requestTime: string): string[] {
-    let names: string[] = [];
-    for (let session of this.sessions) {
+    const names: string[] = [];
+    for (const session of this.sessions) {
       if (session.startTime <= requestTime && requestTime <= session.endTime) {
         if (!names.includes(session.role.name)) {
           names.push(session.role.name);
@@ -43,7 +43,7 @@ export class SessionRole {
       return this.name == name;
     }
 
-    for (let s of this.sessions) {
+    for (const s of this.sessions) {
       if (s.startTime <= requestTime && requestTime <= s.endTime) {
         if (s.role.name == name) {
           return true;
@@ -57,7 +57,7 @@ export class SessionRole {
   }
 
   public hasDirectRole(name: string, requestTime: string): boolean {
-    for (let session of this.sessions) {
+    for (const session of this.sessions) {
       if (session.role.name == name) {
         if (session.startTime <= requestTime && requestTime <= session.endTime) {
           return true;
@@ -70,13 +70,14 @@ export class SessionRole {
   public toString(): string {
     let sessions = '';
     let i = 0;
-    for (let session of this.sessions) {
+    for (const session of this.sessions) {
       if (i == 0) {
         sessions += session.role.name;
       } else {
         sessions += ', ' + session.role.name;
       }
       sessions += ' (until: ' + session.endTime + ')';
+      i++;
     }
     return this.name + ' < ' + sessions;
   }
