@@ -1,19 +1,7 @@
-import { RoleManager, Enforcer, newEnforcer, FileAdapter } from 'casbin';
+import { newEnforcer, FileAdapter } from 'casbin';
 import { getAfterCurrentTime, getAfterOneHour, getCurrentTime, getInOneHour, getOneHourAgo } from './testUtilFunctions';
 import { SessionRoleManager } from '../src/roleManager';
-
-async function testEnforce(e: Enforcer, sub: string, obj: string, act: string, time: string, res: boolean): Promise<void> {
-  expect(await e.enforce(sub, obj, act, time)).toEqual(res);
-}
-
-async function testSessionRole(rm: RoleManager, name1: string, name2: string, requestTime: string, res: boolean): Promise<void> {
-  expect(await rm.hasLink(name1, name2, requestTime)).toEqual(res);
-}
-
-async function testPrintSessionRoles(rm: RoleManager, name1: string, requestTime: string, res: string[]): Promise<void> {
-  const myRes = await rm.getRoles(name1, requestTime);
-  expect(myRes).toEqual(res);
-}
+import { testEnforce, testSessionRole, testPrintSessionRoles } from './testHelperFunctions';
 
 test('testSessionRole', async () => {
   const rm = new SessionRoleManager(3);
@@ -83,12 +71,12 @@ test('testHasLink', async () => {
   const alpha = 'alpha';
   const bravo = 'bravo';
 
-  expect(await rm.hasLink(alpha, bravo)).toEqual(false);
-  expect(await rm.hasLink(alpha, alpha, getCurrentTime())).toEqual(true);
-  expect(await rm.hasLink(alpha, bravo, getCurrentTime())).toEqual(true);
+  await expect(await rm.hasLink(alpha, bravo)).toEqual(false);
+  await expect(await rm.hasLink(alpha, alpha, getCurrentTime())).toEqual(true);
+  await expect(await rm.hasLink(alpha, bravo, getCurrentTime())).toEqual(false);
 
   rm.addLink(alpha, bravo, getCurrentTime(), getInOneHour());
-  expect(await rm.hasLink(alpha, bravo, getCurrentTime())).toEqual(true);
+  await expect(await rm.hasLink(alpha, bravo, getCurrentTime())).toEqual(true);
 });
 
 test('testDeleteLink', async () => {
@@ -103,12 +91,12 @@ test('testDeleteLink', async () => {
 
   rm.deleteLink(alpha, bravo);
 
-  expect(await rm.hasLink(alpha, bravo, getCurrentTime())).toEqual(false);
+  await expect(await rm.hasLink(alpha, bravo, getCurrentTime())).toEqual(false);
 
   rm.deleteLink(alpha, 'delta');
   rm.deleteLink(bravo, charlie);
 
-  expect(await rm.hasLink(alpha, charlie, getCurrentTime())).toEqual(true);
+  await expect(await rm.hasLink(alpha, charlie, getCurrentTime())).toEqual(true);
 });
 
 test('testHierarchieLevel', async () => {
@@ -117,7 +105,7 @@ test('testHierarchieLevel', async () => {
   rm.addLink('alpha', 'bravo', getOneHourAgo(), getInOneHour());
   rm.addLink('bravo', 'charlie', getOneHourAgo(), getInOneHour());
 
-  expect(await rm.hasLink('alpha', 'charlie', getCurrentTime())).toEqual(false);
+  await expect(await rm.hasLink('alpha', 'charlie', getCurrentTime())).toEqual(false);
 });
 
 test('testOutdatedSessions', async () => {
@@ -126,15 +114,15 @@ test('testOutdatedSessions', async () => {
   rm.addLink('alpha', 'bravo', getOneHourAgo(), getCurrentTime());
   rm.addLink('bravo', 'charlie', getOneHourAgo(), getInOneHour());
 
-  expect(await rm.hasLink('alpha', 'bravo', getInOneHour())).toEqual(false);
-  expect(await rm.hasLink('alpha', 'charlie', getOneHourAgo())).toEqual(true);
+  await expect(await rm.hasLink('alpha', 'bravo', getInOneHour())).toEqual(false);
+  await expect(await rm.hasLink('alpha', 'charlie', getOneHourAgo())).toEqual(true);
 });
 
 test('testGetRoles', async () => {
   const rm = new SessionRoleManager(3);
 
-  expect(await rm.getRoles('alpha')).toEqual(null);
-  expect(await rm.getRoles('bravo', getCurrentTime())).toEqual(null);
+  await expect(await rm.getRoles('alpha')).toEqual(null);
+  await expect(await rm.getRoles('bravo', getCurrentTime())).toEqual(null);
 
   rm.addLink('alpha', 'bravo', getOneHourAgo(), getInOneHour());
 
@@ -163,19 +151,19 @@ test('testGetUsers', async () => {
   rm.addLink('delta', 'alpha', getOneHourAgo(), getInOneHour());
 
   let myRes = await rm.getUsers('alpha');
-  expect(myRes).toEqual(null);
+  await expect(myRes).toEqual(null);
 
   myRes = await rm.getUsers('alpha', getCurrentTime());
-  expect(myRes).toEqual(['bravo', 'charlie', 'delta']);
+  await expect(myRes).toEqual(['bravo', 'charlie', 'delta']);
 
   myRes = await rm.getUsers('alpha', getOneHourAgo());
-  expect(myRes).toEqual(['bravo', 'charlie', 'delta']);
+  await expect(myRes).toEqual(['bravo', 'charlie', 'delta']);
 
   myRes = await rm.getUsers('alpha', getAfterOneHour());
-  expect(myRes).toEqual([]);
+  await expect(myRes).toEqual([]);
 
   myRes = await rm.getUsers('bravo', getCurrentTime());
-  expect(myRes).toEqual([]);
+  await expect(myRes).toEqual([]);
 });
 
 test('testEnforcer', async () => {

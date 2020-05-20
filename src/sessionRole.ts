@@ -8,6 +8,7 @@ export class SessionRole {
 
   constructor(name: string) {
     this.name = name;
+    this.sessions = new Array<Session>(0);
   }
 
   public addSession(s: Session) {
@@ -42,7 +43,6 @@ export class SessionRole {
     if (hierarchyLevel == 1) {
       return this.name == name;
     }
-
     for (const s of this.sessions) {
       if (s.startTime <= requestTime && requestTime <= s.endTime) {
         if (s.role.name == name) {
