@@ -3,7 +3,7 @@ import { SessionRole } from './sessionRole';
 import { Session } from './session';
 
 export class SessionRoleManager implements RoleManager {
-  private allRoles: Map<String, SessionRole>;
+  private allRoles: Map<string, SessionRole>;
   private maxHierarchyLevel: number;
 
   /**
@@ -23,9 +23,9 @@ export class SessionRoleManager implements RoleManager {
 
   private createRole(name: string): SessionRole {
     if (!this.hasRole(name)) {
-      this.allRoles[name] = new SessionRole(name);
+      this.allRoles.set(name, new SessionRole(name));
     }
-    return this.allRoles[name];
+    return this.allRoles.get(name);
   }
 
   // Clear clears all stored data and resets the role manager to the initial state.
@@ -120,9 +120,9 @@ export class SessionRoleManager implements RoleManager {
     const requestTime = currentTime[0];
 
     const users: string[] = [];
-    for (const item of this.allRoles) {
-      if (item[1].hasDirectRole(name, requestTime)) {
-        users.push(item[1].name);
+    for (const item of Array.from(this.allRoles.values())) {
+      if (item.hasDirectRole(name, requestTime)) {
+        users.push(item.name);
       }
     }
     users.sort();
@@ -131,8 +131,8 @@ export class SessionRoleManager implements RoleManager {
 
   // PrintRoles prints all the roles to log.
   public printRoles(): Promise<void> {
-    for (const item of this.allRoles) {
-      logPrint(item[1].toString());
+    for (const item of Array.from(this.allRoles.values())) {
+      logPrint(item.toString());
     }
     return;
   }
