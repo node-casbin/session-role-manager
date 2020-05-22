@@ -39,8 +39,7 @@ export class SessionRoleManager implements RoleManager {
   // timeRange is the time range when the role inheritance link is active.
   public addLink(name1: string, name2: string, ...timeRange: string[]): Promise<void> {
     if (timeRange.length != 2) {
-      // return errors.New("error: timeRange should be 2 parameters")
-      return;
+      throw new Error('error: timeRange should be 2 parameters');
     }
     const startTime = timeRange[0];
     const endTime = timeRange[1];
@@ -58,8 +57,7 @@ export class SessionRoleManager implements RoleManager {
   // unused is not used.
   public deleteLink(name1: string, name2: string, ...unused: string[]): Promise<void> {
     if (!this.hasRole(name1) || !this.hasRole(name2)) {
-      // return errors.New("error: name1 or name2 does not exist")
-      return;
+      throw new Error('error: name1 or name2 does not exist');
     }
 
     const role1 = this.createRole(name1);
@@ -73,22 +71,18 @@ export class SessionRoleManager implements RoleManager {
   // requestTime is the querying time for the role inheritance link.
   public async hasLink(name1: string, name2: string, ...requestTime: string[]): Promise<boolean> {
     if (requestTime.length != 1) {
-      // return false, errors.New("error: requestTime should be 1 parameter")
       return false;
     }
 
     if (name1 == name2) {
-      // return true, nil
       return true;
     }
 
     if (!this.hasRole(name1) || !this.hasRole(name2)) {
-      // return false, nil
       return false;
     }
 
     const role1 = this.createRole(name1);
-    // return role1.hasValidSession(name2, rm.maxHierarchyLevel, requestTime[0]), nil
     return role1.hasValidSession(name2, this.maxHierarchyLevel, requestTime[0]);
   }
 
@@ -96,7 +90,6 @@ export class SessionRoleManager implements RoleManager {
   // currentTime is the querying time for the role inheritance link.
   public async getRoles(name: string, ...currentTime: string[]): Promise<string[]> {
     if (currentTime.length != 1) {
-      // return nil, errors.New("error: currentTime should be 1 parameter")
       return null;
     }
     const requestTime = currentTime[0];
@@ -114,7 +107,6 @@ export class SessionRoleManager implements RoleManager {
   // currentTime is the querying time for the role inheritance link.
   public async getUsers(name: string, ...currentTime: string[]): Promise<string[]> {
     if (currentTime.length != 1) {
-      // return nil, errors.New("error: currentTime should be 1 parameter")
       return null;
     }
     const requestTime = currentTime[0];

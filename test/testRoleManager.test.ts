@@ -56,15 +56,6 @@ test('testClear', async () => {
   testSessionRole(rm, 'charlie', 'foxtrott', getCurrentTime(), false);
 });
 
-test('testAddLink', async () => {
-  const rm = new SessionRoleManager(3);
-  rm.addLink('alpha', 'bravo');
-  testSessionRole(rm, 'alpha', 'bravo', getCurrentTime(), false);
-
-  rm.addLink('alpha', 'bravo', getCurrentTime());
-  testSessionRole(rm, 'alpha', 'bravo', getCurrentTime(), false);
-});
-
 test('testHasLink', async () => {
   const rm = new SessionRoleManager(3);
 
@@ -93,7 +84,6 @@ test('testDeleteLink', async () => {
 
   await expect(await rm.hasLink(alpha, bravo, getCurrentTime())).toEqual(false);
 
-  rm.deleteLink(alpha, 'delta');
   rm.deleteLink(bravo, charlie);
 
   await expect(await rm.hasLink(alpha, charlie, getCurrentTime())).toEqual(true);
