@@ -25,19 +25,18 @@ export class SessionRoleManager implements RoleManager {
     if (!this.hasRole(name)) {
       this.allRoles.set(name, new SessionRole(name));
     }
-    return this.allRoles.get(name);
+    return this.allRoles.get(name)!;
   }
 
   // Clear clears all stored data and resets the role manager to the initial state.
-  public clear(): Promise<void> {
+  public async clear(): Promise<void> {
     this.allRoles = new Map<string, SessionRole>();
-    return;
   }
 
   // AddLink adds the inheritance link between role: name1 and role: name2.
   // aka role: name1 inherits role: name2.
   // timeRange is the time range when the role inheritance link is active.
-  public addLink(name1: string, name2: string, ...timeRange: string[]): Promise<void> {
+  public async addLink(name1: string, name2: string, ...timeRange: string[]): Promise<void> {
     if (timeRange.length != 2) {
       throw new Error('error: timeRange should be 2 parameters');
     }
@@ -49,13 +48,12 @@ export class SessionRoleManager implements RoleManager {
 
     const session = new Session(role2, startTime, endTime);
     role1.addSession(session);
-    return;
   }
 
   // DeleteLink deletes the inheritance link between role: name1 and role: name2.
   // aka role: name1 does not inherit role: name2 any more.
   // unused is not used.
-  public deleteLink(name1: string, name2: string, ...unused: string[]): Promise<void> {
+  public async deleteLink(name1: string, name2: string, ...unused: string[]): Promise<void> {
     if (!this.hasRole(name1) || !this.hasRole(name2)) {
       throw new Error('error: name1 or name2 does not exist');
     }
@@ -71,7 +69,7 @@ export class SessionRoleManager implements RoleManager {
   // requestTime is the querying time for the role inheritance link.
   public async hasLink(name1: string, name2: string, ...requestTime: string[]): Promise<boolean> {
     if (requestTime.length != 1) {
-      return false;
+      throw new Error('requestTime length should be 1');
     }
 
     if (name1 == name2) {
@@ -90,13 +88,13 @@ export class SessionRoleManager implements RoleManager {
   // currentTime is the querying time for the role inheritance link.
   public async getRoles(name: string, ...currentTime: string[]): Promise<string[]> {
     if (currentTime.length != 1) {
-      return null;
+      throw new Error('requestTime length should be 1');
     }
     const requestTime = currentTime[0];
 
     if (!this.hasRole(name)) {
       // return nil, errors.New("error: name does not exist")
-      return null;
+      return [];
     }
 
     const sessionRoles = this.createRole(name).getSessionRoles(requestTime);
@@ -107,7 +105,7 @@ export class SessionRoleManager implements RoleManager {
   // currentTime is the querying time for the role inheritance link.
   public async getUsers(name: string, ...currentTime: string[]): Promise<string[]> {
     if (currentTime.length != 1) {
-      return null;
+      throw new Error('requestTime length should be 1');
     }
     const requestTime = currentTime[0];
 
@@ -122,10 +120,9 @@ export class SessionRoleManager implements RoleManager {
   }
 
   // PrintRoles prints all the roles to log.
-  public printRoles(): Promise<void> {
+  public async printRoles(): Promise<void> {
     for (const item of Array.from(this.allRoles.values())) {
       logPrint(item.toString());
     }
-    return;
   }
 }

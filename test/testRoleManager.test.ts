@@ -5,55 +5,55 @@ import { testEnforce, testSessionRole, testPrintSessionRoles } from './testHelpe
 
 test('testSessionRole', async () => {
   const rm = new SessionRoleManager(3);
-  rm.addLink('alpha', 'bravo', getCurrentTime(), getInOneHour());
-  rm.addLink('alpha', 'charlie', getCurrentTime(), getInOneHour());
-  rm.addLink('bravo', 'delta', getCurrentTime(), getInOneHour());
-  rm.addLink('bravo', 'echo', getCurrentTime(), getInOneHour());
-  rm.addLink('charlie', 'echo', getCurrentTime(), getInOneHour());
-  rm.addLink('charlie', 'foxtrott', getCurrentTime(), getInOneHour());
+  await rm.addLink('alpha', 'bravo', getCurrentTime(), getInOneHour());
+  await rm.addLink('alpha', 'charlie', getCurrentTime(), getInOneHour());
+  await rm.addLink('bravo', 'delta', getCurrentTime(), getInOneHour());
+  await rm.addLink('bravo', 'echo', getCurrentTime(), getInOneHour());
+  await rm.addLink('charlie', 'echo', getCurrentTime(), getInOneHour());
+  await rm.addLink('charlie', 'foxtrott', getCurrentTime(), getInOneHour());
 
-  testSessionRole(rm, 'alpha', 'bravo', getCurrentTime(), true);
-  testSessionRole(rm, 'alpha', 'charlie', getCurrentTime(), true);
-  testSessionRole(rm, 'bravo', 'delta', getCurrentTime(), true);
-  testSessionRole(rm, 'bravo', 'echo', getCurrentTime(), true);
-  testSessionRole(rm, 'charlie', 'echo', getCurrentTime(), true);
-  testSessionRole(rm, 'charlie', 'foxtrott', getCurrentTime(), true);
+  await testSessionRole(rm, 'alpha', 'bravo', getCurrentTime(), true);
+  await testSessionRole(rm, 'alpha', 'charlie', getCurrentTime(), true);
+  await testSessionRole(rm, 'bravo', 'delta', getCurrentTime(), true);
+  await testSessionRole(rm, 'bravo', 'echo', getCurrentTime(), true);
+  await testSessionRole(rm, 'charlie', 'echo', getCurrentTime(), true);
+  await testSessionRole(rm, 'charlie', 'foxtrott', getCurrentTime(), true);
 
-  testSessionRole(rm, 'alpha', 'bravo', getOneHourAgo(), false);
-  testSessionRole(rm, 'alpha', 'charlie', getOneHourAgo(), false);
-  testSessionRole(rm, 'bravo', 'delta', getOneHourAgo(), false);
-  testSessionRole(rm, 'bravo', 'echo', getOneHourAgo(), false);
-  testSessionRole(rm, 'charlie', 'echo', getOneHourAgo(), false);
-  testSessionRole(rm, 'charlie', 'foxtrott', getOneHourAgo(), false);
+  await testSessionRole(rm, 'alpha', 'bravo', getOneHourAgo(), false);
+  await testSessionRole(rm, 'alpha', 'charlie', getOneHourAgo(), false);
+  await testSessionRole(rm, 'bravo', 'delta', getOneHourAgo(), false);
+  await testSessionRole(rm, 'bravo', 'echo', getOneHourAgo(), false);
+  await testSessionRole(rm, 'charlie', 'echo', getOneHourAgo(), false);
+  await testSessionRole(rm, 'charlie', 'foxtrott', getOneHourAgo(), false);
 
-  testSessionRole(rm, 'alpha', 'bravo', getAfterOneHour(), false);
-  testSessionRole(rm, 'alpha', 'charlie', getAfterOneHour(), false);
-  testSessionRole(rm, 'bravo', 'delta', getAfterOneHour(), false);
-  testSessionRole(rm, 'bravo', 'echo', getAfterOneHour(), false);
-  testSessionRole(rm, 'charlie', 'echo', getAfterOneHour(), false);
-  testSessionRole(rm, 'charlie', 'foxtrott', getAfterOneHour(), false);
+  await testSessionRole(rm, 'alpha', 'bravo', getAfterOneHour(), false);
+  await testSessionRole(rm, 'alpha', 'charlie', getAfterOneHour(), false);
+  await testSessionRole(rm, 'bravo', 'delta', getAfterOneHour(), false);
+  await testSessionRole(rm, 'bravo', 'echo', getAfterOneHour(), false);
+  await testSessionRole(rm, 'charlie', 'echo', getAfterOneHour(), false);
+  await testSessionRole(rm, 'charlie', 'foxtrott', getAfterOneHour(), false);
 });
 
 test('testClear', async () => {
   const rm = new SessionRoleManager(3);
-  rm.addLink('alpha', 'bravo', getCurrentTime(), getInOneHour());
-  rm.addLink('alpha', 'charlie', getCurrentTime(), getInOneHour());
-  rm.addLink('bravo', 'delta', getCurrentTime(), getInOneHour());
-  rm.addLink('bravo', 'echo', getCurrentTime(), getInOneHour());
-  rm.addLink('charlie', 'echo', getCurrentTime(), getInOneHour());
-  rm.addLink('charlie', 'foxtrott', getCurrentTime(), getInOneHour());
+  await rm.addLink('alpha', 'bravo', getCurrentTime(), getInOneHour());
+  await rm.addLink('alpha', 'charlie', getCurrentTime(), getInOneHour());
+  await rm.addLink('bravo', 'delta', getCurrentTime(), getInOneHour());
+  await rm.addLink('bravo', 'echo', getCurrentTime(), getInOneHour());
+  await rm.addLink('charlie', 'echo', getCurrentTime(), getInOneHour());
+  await rm.addLink('charlie', 'foxtrott', getCurrentTime(), getInOneHour());
 
-  rm.clear();
+  await rm.clear();
 
   // All data is cleared.
   // No role inheritance now.
 
-  testSessionRole(rm, 'alpha', 'bravo', getCurrentTime(), false);
-  testSessionRole(rm, 'alpha', 'charlie', getCurrentTime(), false);
-  testSessionRole(rm, 'bravo', 'delta', getCurrentTime(), false);
-  testSessionRole(rm, 'bravo', 'echo', getCurrentTime(), false);
-  testSessionRole(rm, 'charlie', 'echo', getCurrentTime(), false);
-  testSessionRole(rm, 'charlie', 'foxtrott', getCurrentTime(), false);
+  await testSessionRole(rm, 'alpha', 'bravo', getCurrentTime(), false);
+  await testSessionRole(rm, 'alpha', 'charlie', getCurrentTime(), false);
+  await testSessionRole(rm, 'bravo', 'delta', getCurrentTime(), false);
+  await testSessionRole(rm, 'bravo', 'echo', getCurrentTime(), false);
+  await testSessionRole(rm, 'charlie', 'echo', getCurrentTime(), false);
+  await testSessionRole(rm, 'charlie', 'foxtrott', getCurrentTime(), false);
 });
 
 test('testHasLink', async () => {
@@ -62,11 +62,11 @@ test('testHasLink', async () => {
   const alpha = 'alpha';
   const bravo = 'bravo';
 
-  await expect(await rm.hasLink(alpha, bravo)).toEqual(false);
+  await expect(rm.hasLink(alpha, bravo)).rejects.toThrowError(new Error('requestTime length should be 1'));
   await expect(await rm.hasLink(alpha, alpha, getCurrentTime())).toEqual(true);
   await expect(await rm.hasLink(alpha, bravo, getCurrentTime())).toEqual(false);
 
-  rm.addLink(alpha, bravo, getCurrentTime(), getInOneHour());
+  await rm.addLink(alpha, bravo, getCurrentTime(), getInOneHour());
   await expect(await rm.hasLink(alpha, bravo, getCurrentTime())).toEqual(true);
 });
 
@@ -77,14 +77,14 @@ test('testDeleteLink', async () => {
   const bravo = 'bravo';
   const charlie = 'charlie';
 
-  rm.addLink(alpha, bravo, getOneHourAgo(), getInOneHour());
-  rm.addLink(alpha, charlie, getOneHourAgo(), getInOneHour());
+  await rm.addLink(alpha, bravo, getOneHourAgo(), getInOneHour());
+  await rm.addLink(alpha, charlie, getOneHourAgo(), getInOneHour());
 
-  rm.deleteLink(alpha, bravo);
+  await rm.deleteLink(alpha, bravo);
 
   await expect(await rm.hasLink(alpha, bravo, getCurrentTime())).toEqual(false);
 
-  rm.deleteLink(bravo, charlie);
+  await rm.deleteLink(bravo, charlie);
 
   await expect(await rm.hasLink(alpha, charlie, getCurrentTime())).toEqual(true);
 });
@@ -92,8 +92,8 @@ test('testDeleteLink', async () => {
 test('testHierarchieLevel', async () => {
   const rm = new SessionRoleManager(2);
 
-  rm.addLink('alpha', 'bravo', getOneHourAgo(), getInOneHour());
-  rm.addLink('bravo', 'charlie', getOneHourAgo(), getInOneHour());
+  await rm.addLink('alpha', 'bravo', getOneHourAgo(), getInOneHour());
+  await rm.addLink('bravo', 'charlie', getOneHourAgo(), getInOneHour());
 
   await expect(await rm.hasLink('alpha', 'charlie', getCurrentTime())).toEqual(false);
 });
@@ -101,8 +101,8 @@ test('testHierarchieLevel', async () => {
 test('testOutdatedSessions', async () => {
   let rm = new SessionRoleManager(3);
 
-  rm.addLink('alpha', 'bravo', getOneHourAgo(), getCurrentTime());
-  rm.addLink('bravo', 'charlie', getOneHourAgo(), getInOneHour());
+  await rm.addLink('alpha', 'bravo', getOneHourAgo(), getCurrentTime());
+  await rm.addLink('bravo', 'charlie', getOneHourAgo(), getInOneHour());
 
   await expect(await rm.hasLink('alpha', 'bravo', getInOneHour())).toEqual(false);
   await expect(await rm.hasLink('alpha', 'charlie', getOneHourAgo())).toEqual(true);
@@ -111,39 +111,37 @@ test('testOutdatedSessions', async () => {
 test('testGetRoles', async () => {
   const rm = new SessionRoleManager(3);
 
-  await expect(await rm.getRoles('alpha')).toEqual(null);
-  await expect(await rm.getRoles('bravo', getCurrentTime())).toEqual(null);
+  await expect(rm.getRoles('alpha')).rejects.toThrowError(new Error('requestTime length should be 1'));
+  await expect(await rm.getRoles('bravo', getCurrentTime())).toEqual([]);
 
-  rm.addLink('alpha', 'bravo', getOneHourAgo(), getInOneHour());
+  await rm.addLink('alpha', 'bravo', getOneHourAgo(), getInOneHour());
 
-  testPrintSessionRoles(rm, 'alpha', getOneHourAgo(), ['bravo']);
-  testPrintSessionRoles(rm, 'alpha', getCurrentTime(), ['bravo']);
-  testPrintSessionRoles(rm, 'alpha', getAfterOneHour(), []);
+  await testPrintSessionRoles(rm, 'alpha', getOneHourAgo(), ['bravo']);
+  await testPrintSessionRoles(rm, 'alpha', getCurrentTime(), ['bravo']);
+  await testPrintSessionRoles(rm, 'alpha', getAfterOneHour(), []);
 
-  rm.addLink('alpha', 'charlie', getOneHourAgo(), getCurrentTime());
+  await rm.addLink('alpha', 'charlie', getOneHourAgo(), getCurrentTime());
 
-  testPrintSessionRoles(rm, 'alpha', getOneHourAgo(), ['bravo', 'charlie']);
-  testPrintSessionRoles(rm, 'alpha', getAfterCurrentTime(), ['bravo']);
-  testPrintSessionRoles(rm, 'alpha', getAfterOneHour(), []);
+  await testPrintSessionRoles(rm, 'alpha', getOneHourAgo(), ['bravo', 'charlie']);
+  await testPrintSessionRoles(rm, 'alpha', getAfterCurrentTime(), ['bravo']);
+  await testPrintSessionRoles(rm, 'alpha', getAfterOneHour(), []);
 
-  rm.addLink('alpha', 'charlie', getOneHourAgo(), getInOneHour());
+  await rm.addLink('alpha', 'charlie', getOneHourAgo(), getInOneHour());
 
-  testPrintSessionRoles(rm, 'alpha', getOneHourAgo(), ['bravo', 'charlie']);
-  testPrintSessionRoles(rm, 'alpha', getCurrentTime(), ['bravo', 'charlie']);
-  testPrintSessionRoles(rm, 'alpha', getAfterOneHour(), []);
+  await testPrintSessionRoles(rm, 'alpha', getOneHourAgo(), ['bravo', 'charlie']);
+  await testPrintSessionRoles(rm, 'alpha', getCurrentTime(), ['bravo', 'charlie']);
+  await testPrintSessionRoles(rm, 'alpha', getAfterOneHour(), []);
 });
 
 test('testGetUsers', async () => {
   const rm = new SessionRoleManager(3);
 
-  rm.addLink('bravo', 'alpha', getOneHourAgo(), getInOneHour());
-  rm.addLink('charlie', 'alpha', getOneHourAgo(), getInOneHour());
-  rm.addLink('delta', 'alpha', getOneHourAgo(), getInOneHour());
+  await rm.addLink('bravo', 'alpha', getOneHourAgo(), getInOneHour());
+  await rm.addLink('charlie', 'alpha', getOneHourAgo(), getInOneHour());
+  await rm.addLink('delta', 'alpha', getOneHourAgo(), getInOneHour());
+  await expect(rm.getUsers('alpha')).rejects.toThrowError(new Error('requestTime length should be 1'));
 
-  let myRes = await rm.getUsers('alpha');
-  await expect(myRes).toEqual(null);
-
-  myRes = await rm.getUsers('alpha', getCurrentTime());
+  let myRes = await rm.getUsers('alpha', getCurrentTime());
   await expect(myRes).toEqual(['bravo', 'charlie', 'delta']);
 
   myRes = await rm.getUsers('alpha', getOneHourAgo());
@@ -177,7 +175,7 @@ test('testEnforcer', async () => {
   //
   // Otherwise, we can set the role manager at any time, because role
   // manager has nothing to do with the adapter.
-  e.loadPolicy();
+  await e.loadPolicy();
 
   // Current role inheritance tree:
   //          delta          echo          foxtrott
@@ -193,21 +191,21 @@ test('testEnforcer', async () => {
   // Note: we use small integers as time range just for example, in real
   // environment, it will be Unix time range like (1508503308708903372-1508506908708903907)
 
-  testEnforce(e, 'alpha', 'data1', 'read', '00', true);
-  testEnforce(e, 'alpha', 'data1', 'read', '05', true);
-  testEnforce(e, 'alpha', 'data1', 'read', '10', true);
-  testEnforce(e, 'alpha', 'data1', 'read', '15', false);
-  testEnforce(e, 'alpha', 'data1', 'read', '20', false);
+  await testEnforce(e, 'alpha', 'data1', 'read', '00', true);
+  await testEnforce(e, 'alpha', 'data1', 'read', '05', true);
+  await testEnforce(e, 'alpha', 'data1', 'read', '10', true);
+  await testEnforce(e, 'alpha', 'data1', 'read', '15', false);
+  await testEnforce(e, 'alpha', 'data1', 'read', '20', false);
 
-  testEnforce(e, 'alpha', 'data2', 'read', '00', false);
-  testEnforce(e, 'alpha', 'data2', 'read', '05', true);
-  testEnforce(e, 'alpha', 'data2', 'read', '10', true);
-  testEnforce(e, 'alpha', 'data2', 'read', '15', true);
-  testEnforce(e, 'alpha', 'data2', 'read', '20', false);
+  await testEnforce(e, 'alpha', 'data2', 'read', '00', false);
+  await testEnforce(e, 'alpha', 'data2', 'read', '05', true);
+  await testEnforce(e, 'alpha', 'data2', 'read', '10', true);
+  await testEnforce(e, 'alpha', 'data2', 'read', '15', true);
+  await testEnforce(e, 'alpha', 'data2', 'read', '20', false);
 
-  testEnforce(e, 'alpha', 'data3', 'read', '00', false);
-  testEnforce(e, 'alpha', 'data3', 'read', '05', false);
-  testEnforce(e, 'alpha', 'data3', 'read', '10', true);
-  testEnforce(e, 'alpha', 'data3', 'read', '15', false);
-  testEnforce(e, 'alpha', 'data3', 'read', '20', false);
+  await testEnforce(e, 'alpha', 'data3', 'read', '00', false);
+  await testEnforce(e, 'alpha', 'data3', 'read', '05', false);
+  await testEnforce(e, 'alpha', 'data3', 'read', '10', true);
+  await testEnforce(e, 'alpha', 'data3', 'read', '15', false);
+  await testEnforce(e, 'alpha', 'data3', 'read', '20', false);
 });
