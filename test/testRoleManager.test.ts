@@ -1,6 +1,6 @@
 import { newEnforcer, FileAdapter } from 'casbin';
 import { getAfterCurrentTime, getAfterOneHour, getCurrentTime, getInOneHour, getOneHourAgo } from './testUtilFunctions';
-import { SessionRoleManager } from '../src/roleManager';
+import { SessionRoleManager } from '../src';
 import { testEnforce, testSessionRole, testPrintSessionRoles } from './testHelperFunctions';
 
 test('testSessionRole', async () => {
