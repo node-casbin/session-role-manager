@@ -47,7 +47,7 @@ export class SessionRoleManager implements RoleManager {
     const role1 = this.createRole(name1);
     const role2 = this.createRole(name2);
 
-    const session = new Session(role2, startTime, endTime);
+    const session = new Session(role2, new Date(parseInt(startTime)), new Date(parseInt(endTime)));
     role1.addSession(session);
     return;
   }
@@ -83,7 +83,7 @@ export class SessionRoleManager implements RoleManager {
     }
 
     const role1 = this.createRole(name1);
-    return role1.hasValidSession(name2, this.maxHierarchyLevel, requestTime[0]);
+    return role1.hasValidSession(name2, this.maxHierarchyLevel, new Date(parseInt(requestTime[0])));
   }
 
   // GetRoles gets the roles that a subject inherits.
@@ -99,7 +99,7 @@ export class SessionRoleManager implements RoleManager {
       return null;
     }
 
-    const sessionRoles = this.createRole(name).getSessionRoles(requestTime);
+    const sessionRoles = this.createRole(name).getSessionRoles(new Date(parseInt(requestTime)));
     return sessionRoles;
   }
 
@@ -113,7 +113,7 @@ export class SessionRoleManager implements RoleManager {
 
     const users: string[] = [];
     for (const item of Array.from(this.allRoles.values())) {
-      if (item.hasDirectRole(name, requestTime)) {
+      if (item.hasDirectRole(name, new Date(parseInt(requestTime)))) {
         users.push(item.name);
       }
     }

@@ -27,7 +27,7 @@ export class SessionRole {
     this.sessions = this.sessions.slice(0, index);
   }
 
-  public getSessionRoles(requestTime: string): string[] {
+  public getSessionRoles(requestTime: Date): string[] {
     const names: string[] = [];
     for (const session of this.sessions) {
       if (session.startTime <= requestTime && requestTime <= session.endTime) {
@@ -39,7 +39,7 @@ export class SessionRole {
     return names;
   }
 
-  public hasValidSession(name: string, hierarchyLevel: number, requestTime: string): boolean {
+  public hasValidSession(name: string, hierarchyLevel: number, requestTime: Date): boolean {
     if (hierarchyLevel == 1) {
       return this.name == name;
     }
@@ -56,7 +56,7 @@ export class SessionRole {
     return false;
   }
 
-  public hasDirectRole(name: string, requestTime: string): boolean {
+  public hasDirectRole(name: string, requestTime: Date): boolean {
     for (const session of this.sessions) {
       if (session.role.name == name) {
         if (session.startTime <= requestTime && requestTime <= session.endTime) {

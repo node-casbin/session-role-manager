@@ -6,10 +6,10 @@ import { SessionRole } from './sessionRole';
 // becomes invalid too.
 export class Session {
   role: SessionRole;
-  startTime: string;
-  endTime: string;
+  startTime: Date;
+  endTime: Date;
 
-  constructor(role: SessionRole, startTime: string, endTime: string) {
+  constructor(role: SessionRole, startTime: Date, endTime: Date) {
     this.role = role;
     this.startTime = startTime;
     this.endTime = endTime;
