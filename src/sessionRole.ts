@@ -11,20 +11,12 @@ export class SessionRole {
     this.sessions = new Array<Session>(0);
   }
 
-  public addSession(s: Session) {
+  public addSession(s: Session): void {
     this.sessions.push(s);
   }
 
-  public deleteSessions(sessionName: string) {
-    // Delete sessions from an array while iterating it
-    let index = 0;
-    for (const srs of this.sessions) {
-      if (srs.role.name != sessionName) {
-        this.sessions[index] = srs;
-        index++;
-      }
-    }
-    this.sessions = this.sessions.slice(0, index);
+  public deleteSessions(sessionName: string): void {
+    this.sessions = this.sessions.filter((n) => n.role.name !== sessionName);
   }
 
   public getSessionRoles(requestTime: Date): string[] {
