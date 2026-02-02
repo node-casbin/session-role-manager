@@ -8,7 +8,9 @@
     "prepack": "yarn test && yarn build",
     "postpack": "rimraf lib",
     "build": "rimraf lib && tsc",
-    "test": "jest"
+    "test": "jest",
+    "lint": "prettier --check .",
+    "fix": "prettier --write ."
   },
   "files": [
     "examples",
