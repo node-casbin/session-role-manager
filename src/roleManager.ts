@@ -125,4 +125,16 @@ export class SessionRoleManager implements RoleManager {
       logPrint(item.toString());
     }
   }
+
+  // getDomains gets domains that a user has.
+  public async getDomains(name: string): Promise<string[]> {
+    // This role manager does not support domains.
+    return [];
+  }
+
+  // getAllDomains gets all domains.
+  public async getAllDomains(): Promise<string[]> {
+    // This role manager does not support domains.
+    return [];
+  }
 }
