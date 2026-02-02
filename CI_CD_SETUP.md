@@ -7,6 +7,7 @@ This repository uses GitHub Actions for continuous integration and automated rel
 ### CI Workflow (.github/workflows/ci.yml)
 
 Runs on every push and pull request to the `master` branch:
+
 - **Lint**: Checks code formatting with Prettier
 - **Test**: Runs tests on Node.js versions 18 and 20
 - **Build**: Compiles TypeScript to JavaScript
@@ -14,6 +15,7 @@ Runs on every push and pull request to the `master` branch:
 ### Release Workflow (.github/workflows/release.yml)
 
 Runs on every push to the `master` branch after PR merge:
+
 - Runs lint, test, and build
 - Uses [semantic-release](https://github.com/semantic-release/semantic-release) to:
   - Analyze commit messages to determine version bump
@@ -24,6 +26,7 @@ Runs on every push to the `master` branch after PR merge:
 ## Semantic Release Configuration
 
 The project uses conventional commits to determine version bumps:
+
 - `fix:` - patch release (0.0.x)
 - `feat:` - minor release (0.x.0)
 - `BREAKING CHANGE:` - major release (x.0.0)
@@ -82,6 +85,7 @@ chore: update dependencies
 ```
 
 Examples:
+
 ```
 feat: add session timeout configuration
 fix: resolve memory leak in role manager
